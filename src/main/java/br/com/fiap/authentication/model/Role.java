@@ -1,14 +1,35 @@
 package br.com.fiap.authentication.model;
 
 import br.com.fiap.sistema.model.Sistema;
+import jakarta.persistence.*;
 
 /**
  * É uma permissão de um sistema em específico
  */
+
+@Entity
+@Table(name = "TB_ROLE", uniqueConstraints = {
+        @UniqueConstraint(name = "UK_NOME_DESCRI_TB_ROLE", columnNames = {"NOME_TB_ROLE", "DESCRI_TB_ROLE"})
+})
 public class Role {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_TB_ROLE")
+    @SequenceGenerator(name = "SQ_TB_ROLE", sequenceName = "SQ_TB_ROLE")
+    @Column(name = "ID_TB_ROLE")
     private Long id;
+
+    @Column(name = "NOME_TB_ROLE", nullable = false)
     private String nome;
+    @Column(name = "DESCRI_TB_ROLE", nullable = false)
     private String descricao;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST , CascadeType.MERGE})
+    @JoinColumn(
+            name = "ID_TB_SISTEMA",
+            referencedColumnName = "ID_TB_SISTEMA",
+            foreignKey = @ForeignKey(name = "FK_TB_SISTEMA")
+    )
     private Sistema sistema;
 
 
