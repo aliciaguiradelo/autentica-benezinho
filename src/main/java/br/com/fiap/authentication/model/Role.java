@@ -13,6 +13,7 @@ import jakarta.persistence.*;
 })
 public class Role {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_TB_ROLE")
     @SequenceGenerator(name = "SQ_TB_ROLE", sequenceName = "SQ_TB_ROLE")
