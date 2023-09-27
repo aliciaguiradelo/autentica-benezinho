@@ -1,13 +1,40 @@
 package br.com.fiap.pessoa.model;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+@Entity
+@Table(name = "TB_PFISICA", uniqueConstraints = {
+        @UniqueConstraint(name = "UK_CPF_TB_PFISICA", columnNames = {"CPF_TB_PFISICA"})
+})
 public class PessoaFisica extends Pessoa {
+    @Column(name = "CPF_TB_PFISICA", nullable = false)
     private String CPF;
+    @Column(name = "SEXO_TB_PFISICA", nullable = false)
     private Sexo sexo;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "TB_PFISICA_PFISICA",
+            joinColumns = {
+                    @JoinColumn(
+                            name = "PFISICA",
+                            referencedColumnName = "ID_TB_PFISICA",
+                            foreignKey = @ForeignKey(name = "FK_PFISICA_PFISICA")
+                    )
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(
+                            name = "PFISICA",
+                            referencedColumnName = "ID_TB_PFISICA",
+                            foreignKey = @ForeignKey(name = "FK_PFISICA_PFISICA")
+                    )
+            }
+    )
     private Set<PessoaFisica> filhos = new LinkedHashSet<>(); //Os meus filhos
 
 
