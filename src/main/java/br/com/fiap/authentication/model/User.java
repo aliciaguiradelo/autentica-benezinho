@@ -1,6 +1,7 @@
 package br.com.fiap.authentication.model;
 
 import br.com.fiap.pessoa.model.Pessoa;
+import jakarta.persistence.*;
 
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -9,15 +10,49 @@ import java.util.Set;
 /**
  * É o usuário de uma determinada pessoa nos sistemas da empresa
  */
+@Entity
+@Table(name = "TB_USER", uniqueConstraints = {
+        @UniqueConstraint(name = "UK_EMAIL_TB_USER", columnNames = {"EMAIL_TB_USER"})
+})
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_TB_USER")
+    @SequenceGenerator(name = "SQ_TB_USER", sequenceName = "SQ_TB_USER")
+    @Column(name = "ID_TB_USER")
     private Long id;
 
+    @Column(name = "EMAIL_TB_USER", nullable = false)
     private String email;
 
+    @Column(name = "PASSWORD_TB_USER", nullable = false)
     private String password;
 
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST , CascadeType.MERGE})
+    @JoinColumn(
+            name = "ID_TB_PESSOA",
+            referencedColumnName = "ID_TB_PESSOA",
+            foreignKey = @ForeignKey(name = "FK_TB_PESSOA")
+    )
     private Pessoa pessoa;
 
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "TB_USER_PROFILE",
+            joinColumns = {
+                    @JoinColumn(
+                            name = "USER",
+                            referencedColumnName = "ID_TB_USER",
+                            foreignKey = @ForeignKey(name = "FK_USER_PROFILE")
+                    )
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(
+                            name = "PROFILE",
+                            referencedColumnName = "ID_TB_PROFILE",
+                            foreignKey = @ForeignKey(name = "FK_PROFILE_USER")
+                    )
+            }
+    )
     private Set<Profile> profiles = new LinkedHashSet<>();
 
     public User() {
