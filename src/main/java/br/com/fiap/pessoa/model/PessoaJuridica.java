@@ -8,8 +8,32 @@ import java.util.Objects;
 import java.util.Set;
 
 
+@Entity
+@Table(name = "TB_PJURIDICA", uniqueConstraints = {
+        @UniqueConstraint(name = "UK_CNPJ_TB_PJURIDICA", columnNames = {"CNPJ_TB_PJURIDICA"})
+})
 public class PessoaJuridica extends Pessoa {
+    @Column(name = "CNPJ_TB_PJURIDICA", nullable = false)
     private String CNPJ;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "TB_PJURIDICA_PESSOA",
+            joinColumns = {
+                    @JoinColumn(
+                            name = "PJURIDICA",
+                            referencedColumnName = "ID_PESSOA",
+                            foreignKey = @ForeignKey(name = "FK_PJURIDICA_PESSOA")
+                    )
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(
+                            name = "PESSOA",
+                            referencedColumnName = "ID_PESSOA",
+                            foreignKey = @ForeignKey(name = "FK_PFISICA_PFISICA")
+                    )
+            }
+    )
     private Set<Pessoa> socios = new LinkedHashSet<>();
     public String getCNPJ() {
         return CNPJ;
