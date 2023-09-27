@@ -25,8 +25,24 @@ public class Sistema {
     @Column(name = "SIGLA_TB_SISTEMA", nullable = false)
     private String sigla;
 
-    @ManyToMany(mappedBy = "sistemas", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @OrderBy("name asc")
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "TB_SISTEMA_PESSOA",
+            joinColumns = {
+                    @JoinColumn(
+                            name = "SISTEMA",
+                            referencedColumnName = "ID_TB_SISTEMA",
+                            foreignKey = @ForeignKey(name = "FK_SISTEMA_PESSOA")
+                    )
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(
+                            name = "PESSOA",
+                            referencedColumnName = "ID_TB_PESSOA",
+                            foreignKey = @ForeignKey(name = "FK_PESSOA_SISTEMA")
+                    )
+            }
+    )
     private Set<Pessoa> responsaveis = new LinkedHashSet<>();
 
     public Sistema(String nome, String sigla) {
