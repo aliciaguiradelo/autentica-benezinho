@@ -22,14 +22,14 @@ public class PessoaJuridica extends Pessoa {
             joinColumns = {
                     @JoinColumn(
                             name = "PJURIDICA",
-                            referencedColumnName = "ID_PESSOA",
+                            referencedColumnName = "ID_TB_PESSOA",
                             foreignKey = @ForeignKey(name = "FK_PJURIDICA_PESSOA")
                     )
             },
             inverseJoinColumns = {
                     @JoinColumn(
                             name = "PESSOA",
-                            referencedColumnName = "ID_PESSOA",
+                            referencedColumnName = "ID_TB_PESSOA",
                             foreignKey = @ForeignKey(name = "FK_PFISICA_PFISICA")
                     )
             }
