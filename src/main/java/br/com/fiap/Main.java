@@ -13,6 +13,7 @@ import jakarta.persistence.Persistence;
 
 import javax.swing.*;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Random;
 
 public class Main {
@@ -79,6 +80,12 @@ public class Main {
                 .addPerfil(gerenteBancario)
                 .addPerfil(gerenteDeMercado);
 
+        // Processo p1 = saveProcesso( manager );
+
+        findById( manager );
+
+        findAll( manager );
+
 
         try {
             manager.getTransaction().begin();
@@ -86,7 +93,7 @@ public class Main {
             manager.getTransaction().commit();
 
 
-            //Métodos para consultar aqui:
+
 
 
         } catch (Exception e) {
@@ -122,5 +129,17 @@ public class Main {
         var numero = sorteio.nextLong(999999999);
         var cpf = String.valueOf(numero) + "/0001-" + String.valueOf(digito);
         return cpf;
+    }
+
+    private static void findAll(EntityManager manager) {
+        List<User> list = manager.createQuery( "FROM User " ).getResultList();
+
+        list.forEach( System.out::println );
+    }
+
+    private static void findById(EntityManager manager) {
+        Long id = Long.valueOf( JOptionPane.showInputDialog( "ID do User" ) );
+        User user = manager.find( User.class, id );
+        System.out.println( user );
     }
 }
