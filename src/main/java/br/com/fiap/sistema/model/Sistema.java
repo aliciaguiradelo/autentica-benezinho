@@ -11,10 +11,12 @@ import java.util.Set;
 @Table(name = "TB_SISTEMA", uniqueConstraints = {
         @UniqueConstraint(name = "UK_SIGLA_TB_SISTEMA", columnNames = {"SIGLA_TB_SISTEMA"})
 })
+//classe estava vermelho reclamando pq tava sem o construtor padrão
 public class Sistema {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_TB_SISTEMA")
+    //É opcional usar, usamos apenas para personalizar caso não queiramos o vaor default
     @SequenceGenerator(name = "SQ_TB_SISTEMA", sequenceName = "SQ_TB_SISTEMA")
     @Column(name = "ID_TB_SISTEMA")
     private Long id;
@@ -27,19 +29,19 @@ public class Sistema {
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
-            name = "TB_SISTEMA_PESSOA",
+            name = "TB_GESTOR_SISTEMA",
             joinColumns = {
                     @JoinColumn(
                             name = "SISTEMA",
                             referencedColumnName = "ID_TB_SISTEMA",
-                            foreignKey = @ForeignKey(name = "FK_SISTEMA_PESSOA")
+                            foreignKey = @ForeignKey(name = "FK_SISTEMA_GESTOR")
                     )
             },
             inverseJoinColumns = {
                     @JoinColumn(
-                            name = "PESSOA",
+                            name = "GESTOR",
                             referencedColumnName = "ID_TB_PESSOA",
-                            foreignKey = @ForeignKey(name = "FK_PESSOA_SISTEMA")
+                            foreignKey = @ForeignKey(name = "FK_GESTOR_SISTEMA")
                     )
             }
     )
@@ -48,6 +50,10 @@ public class Sistema {
     public Sistema(String nome, String sigla) {
         this.nome = nome;
         this.sigla = sigla;
+    }
+
+    public Sistema(){
+
     }
 
     public Sistema(Long id, String nome, String sigla, Set<Pessoa> responsaveis) {

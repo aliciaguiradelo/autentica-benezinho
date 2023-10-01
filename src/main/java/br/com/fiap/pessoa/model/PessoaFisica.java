@@ -11,15 +11,17 @@ import java.util.Set;
 @Table(name = "TB_PFISICA", uniqueConstraints = {
         @UniqueConstraint(name = "UK_CPF_TB_PFISICA", columnNames = {"CPF_TB_PFISICA"})
 })
+@DiscriminatorValue("PFISICA")
 public class PessoaFisica extends Pessoa {
     @Column(name = "CPF_TB_PFISICA", nullable = false)
     private String CPF;
-    @Column(name = "SEXO_TB_PFISICA", nullable = false)
+    @Enumerated(EnumType.STRING)
     private Sexo sexo;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
-            name = "TB_PFISICA_PFISICA",
+            //nome da tabela que faz o relacionamento many to many
+            name = "TB_DEPENDENTES",
             joinColumns = {
                     @JoinColumn(
                             name = "PAI",

@@ -19,7 +19,7 @@ import java.util.Random;
 public class Main {
     public static void main(String[] args) {
 
-        EntityManagerFactory factory = Persistence.createEntityManagerFactory("oracle");
+        EntityManagerFactory factory = Persistence.createEntityManagerFactory("maria-db");
         EntityManager manager = factory.createEntityManager();
 
         var bene = new PessoaFisica();
@@ -28,6 +28,14 @@ public class Main {
                 .setSexo(Sexo.MASCULINO)
                 .setNome("Benefrancis do Nascimento")
                 .setNascimento(LocalDate.of(1977, 3, 8));
+
+        var alice = new PessoaFisica();
+        alice.setCPF(geraCpf())
+                .setSexo(Sexo.FEMININO)
+                .setNascimento(LocalDate.of(1939,4,7))
+                .setNome("Alice Bakos");
+
+        bene.addFilho( alice );
 
         var holding = new PessoaJuridica();
         holding.addSocio(bene)
@@ -80,20 +88,17 @@ public class Main {
                 .addPerfil(gerenteBancario)
                 .addPerfil(gerenteDeMercado);
 
-        // Processo p1 = saveProcesso( manager );
-
-        findById( manager );
-
-        findAll( manager );
-
 
         try {
             manager.getTransaction().begin();
             manager.persist(benefrancis);
             manager.getTransaction().commit();
 
+            //Métodos para consultar aqui:
+            //  findById( manager );
 
 
+            // findAll( manager );
 
 
         } catch (Exception e) {
@@ -132,9 +137,7 @@ public class Main {
     }
 
     private static void findAll(EntityManager manager) {
-        List<User> list = manager.createQuery( "FROM User " ).getResultList();
-
-        list.forEach( System.out::println );
+        manager.createQuery( "FROM User " ).getResultList().forEach( System.out::println );
     }
 
     private static void findById(EntityManager manager) {

@@ -12,25 +12,26 @@ import java.util.Set;
 @Table(name = "TB_PJURIDICA", uniqueConstraints = {
         @UniqueConstraint(name = "UK_CNPJ_TB_PJURIDICA", columnNames = {"CNPJ_TB_PJURIDICA"})
 })
+@DiscriminatorValue("PJURIDICA")
 public class PessoaJuridica extends Pessoa {
     @Column(name = "CNPJ_TB_PJURIDICA", nullable = false)
     private String CNPJ;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
-            name = "TB_PJURIDICA_PESSOA",
+            name = "TB_SOCIOS",
             joinColumns = {
                     @JoinColumn(
                             name = "PJURIDICA",
                             referencedColumnName = "ID_TB_PESSOA",
-                            foreignKey = @ForeignKey(name = "FK_PJURIDICA_PESSOA")
+                            foreignKey = @ForeignKey(name = "FK_EMPRESA")
                     )
             },
             inverseJoinColumns = {
                     @JoinColumn(
-                            name = "PESSOA",
+                            name = "SOCIO",
                             referencedColumnName = "ID_TB_PESSOA",
-                            foreignKey = @ForeignKey(name = "FK_PFISICA_PFISICA")
+                            foreignKey = @ForeignKey(name = "FK_SOCIO")
                     )
             }
     )

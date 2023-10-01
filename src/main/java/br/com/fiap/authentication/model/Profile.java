@@ -18,7 +18,7 @@ import java.util.Set;
 public class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_TB_PROFILE")
-    @SequenceGenerator(name = "SQ_TB_PROFILE", sequenceName = "SQ_TB_PROFILE")
+    //@SequenceGenerator(name = "SQ_TB_PROFILE", sequenceName = "SQ_TB_PROFILE")
     @Column(name = "ID_TB_PROFILE")
     private Long id;
 
@@ -27,7 +27,7 @@ public class Profile {
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
-            name = "TB_ROLE",
+            name = "TB_ROLE_PROFILE",
             joinColumns = {
                     @JoinColumn(
                             name = "PROFILE",

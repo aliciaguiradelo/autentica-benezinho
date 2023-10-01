@@ -17,7 +17,8 @@ import java.util.Set;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_TB_USER")
-    @SequenceGenerator(name = "SQ_TB_USER", sequenceName = "SQ_TB_USER")
+    //opcional
+    //@SequenceGenerator(name = "SQ_TB_USER", sequenceName = "SQ_TB_USER")
     @Column(name = "ID_TB_USER")
     private Long id;
 
@@ -27,14 +28,16 @@ public class User {
     @Column(name = "PASSWORD_TB_USER", nullable = false)
     private String password;
 
+    //Quando é só a classe é ManyToOne
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST , CascadeType.MERGE})
     @JoinColumn(
-            name = "ID_TB_PESSOA",
+            name = "PESSOA",
             referencedColumnName = "ID_TB_PESSOA",
             foreignKey = @ForeignKey(name = "FK_TB_PESSOA")
     )
     private Pessoa pessoa;
 
+    //Quando tem uma collection, é ManyToMany
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "TB_USER_PROFILE",

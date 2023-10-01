@@ -7,14 +7,16 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "TB_PESSOA")
+//adicionando anotations
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "TP_PESSOA")
 public abstract class Pessoa {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_TB_PESSOA")
-    @SequenceGenerator(name = "SQ_TB_PESSOA", sequenceName = "SQ_TB_PESSOA")
     @Column(name = "ID_TB_PESSOA")
     protected Long id;
 
-    @Column(name = "NOME_TB_PESSOA")
+    @Column(name = "NOME_TB_PESSOA", nullable = false)
     protected String nome;
 
 
